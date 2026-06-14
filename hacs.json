@@ -1,0 +1,6 @@
+{
+  "name": "Custom Shades",
+  "filename": "hacs_custom_shades.zip",
+  "hide_default_branch": true,
+  "homeassistant": "2023.1"
+}
