@@ -1,3 +1,4 @@
+import pytest
 """pytest configuration -- make custom_shades importable from tests."""
 import asyncio
 import sys
