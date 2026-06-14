@@ -1,0 +1,10 @@
+{
+    "domain": "custom_shades",
+    "name": "Custom Shades",
+    "version": "0.1.0",
+    "documentation": "",
+    "requirements": [],
+    "codeowners": ["@mfoulks"],
+    "config_flow": false,
+    "iot_class": "assumed_state"
+}
