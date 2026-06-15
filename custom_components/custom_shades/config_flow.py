@@ -20,7 +20,7 @@ from .config import SHADE_SCHEMA
 _LOGGER = logging.getLogger(__name__)
 
 
-class ConfigFlow(config_entries.ConfigFlow):
+class ConfigFlow(config_entries.ConfigFlow, domain="custom_shades"):
     """Handle a user config entry for Custom Shades."""
 
     VERSION = 1
