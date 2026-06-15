@@ -32,7 +32,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain="custom_shades"):
     ) -> config_entries.OptionsFlow:
         return OptionsFlowHandler()
 
-    async def _show_form(self, errors: dict[str, str] | None = None) -> FlowResult:
+    def _show_form(self, errors: dict[str, str] | None = None) -> FlowResult:
         """Show the form to the user."""
         schema = self._default_schema()
 
@@ -68,7 +68,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain="custom_shades"):
         if user_input is not None:
             return await self._async_handle_submit(user_input)
 
-        return await self._show_form()
+        return self._show_form()
 
     async def _async_handle_submit(
         self, user_input: dict[str, Any]
@@ -94,7 +94,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain="custom_shades"):
             for key, val in self._default_schema().schema.items()
         })
 
-        return await self.async_show_form(
+        return self.async_show_form(
             step_id="user",
             data_schema=schema,
             errors=errors,
