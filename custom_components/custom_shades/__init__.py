@@ -7,6 +7,9 @@ import voluptuous as vol
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.typing import ConfigType
+
+from .config import validate_shades_config
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -38,11 +41,26 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up custom shades from a config entry."""
-    # For YAML-based setup (no config_flow), we delegate to the module-level setup.
-    # If using entry storage in the future, shade configs would come from here.
+    # Each config entry contains exactly one validated shade. Store it alongside
+    # any YAML configs so cover.py can find everything in hass.data["custom_shades"].
+    if "configs" not in hass.data.get("custom_shades", {}):
+        hass.data.setdefault("custom_shades", {})["configs"] = []
+
+    # entry.data is a dict because ConfigFlow.async_create_entry passes data=...
+    shade_config: dict | None = (
+        entry.data.get("config") if isinstance(entry.data, dict) else None
+    )
+    if shade_config:
+        hass.data["custom_shades"]["configs"].append(shade_config)
+
     return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
+    configs = hass.data.get("custom_shades", {}).get("configs") or []
+    if isinstance(entry.data, dict):
+        shade_config = entry.data.get("config")
+        if shade_config and shade_config in configs:
+            configs.remove(shade_config)
     return True
