@@ -1,41 +1,14 @@
 """Custom Shades integration."""
-from __future__ import annotations
 
 import logging
 
-import voluptuous as vol
-
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.typing import ConfigType
-
-from .config import validate_shades_config
 
 _LOGGER = logging.getLogger(__name__)
 
-
-CONFIG_SCHEMA = vol.Schema(
-    {"shades": {str: vol.Any(dict, lambda v: True)}},
-    extra=vol.ALLOW_EXTRA,
-)
-
-__all__ = ["CONFIG_SCHEMA"]
-
-
-async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
-    """Set up the custom_shades component."""
-    if "shades" not in config:
-        return False
-
-    shade_configs = validate_shades_config(config)
-    if not shade_configs:
-        return False
-
-    # We store validated configs on hass for entity setup to consume.
-    # In a real integration you'd use ConfigEntry options, but for YAML-only
-    # we attach them here and register entities under the platform mechanism.
-    hass.data.setdefault("custom_shades", {})["configs"] = shade_configs
-
+def async_migrate_entry(hass, entry):
+    """Migrate old config entries to the current version."""
     return True
 
 

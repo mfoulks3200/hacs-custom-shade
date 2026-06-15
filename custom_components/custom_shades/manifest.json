@@ -6,6 +6,7 @@
     "requirements": [],
     "codeowners": ["@mfoulks"],
     "config_flow": true,
+    "integration_type": "config_entry",
     "iot_class": "assumed_state",
     "platforms": ["cover"]
 }
